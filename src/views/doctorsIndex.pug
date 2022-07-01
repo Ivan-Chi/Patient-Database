@@ -1,0 +1,52 @@
+extends layout
+
+block content
+  h1= title
+  table
+    thead
+      tr
+        th
+          a(href="/doctors?sort=name") Name
+        th
+          a(href="/doctors?sort=email") Email
+        th
+          a(href="/doctors?sort=phone") Phone
+        th
+          a(href="/doctors?sort=address") Address
+        th
+          a(href="/doctors?sort=insurance") Insurance
+        th
+          a(href="/doctors?sort=specialty") Specialty
+        th
+          a(href="/doctors?sort=created_at") Created At
+        th
+          a(href="/doctors?sort=updated_at") Updated At
+        th
+          a(href="/doctors?sort=deleted_at") Deleted At
+        th
+          a(href="/doctors?sort=id") Id
+    tbody
+      each doctor in doctors
+        tr
+          td
+            a(href="/doctors/#{doctor.id}") #{doctor.name}
+          td
+            a(href="/doctors/#{doctor.id}") #{doctor.email}
+          td
+            a(href="/doctors/#{doctor.id}") #{doctor.phone}
+          td
+            a(href="/doctors/#{doctor.id}") #{doctor.address}
+          td
+            a(href="/doctors/#{doctor.id}") #{doctor.insurance}
+          td
+            a(href="/doctors/#{doctor.id}") #{doctor.specialty}
+          td
+            a(href="/doctors/#{doctor.id}") #{doctor.created_at}
+          td
+            a(href="/doctors/#{doctor.id}") #{doctor.updated_at}
+          td
+            a(href="/doctors/#{doctor.id}") #{doctor.deleted_at}
+          td
+            a(href="/doctors/#{doctor.id}") #{doctor.id}
+  a(href="/doctors/new") New Doctor
+  a(href="/doctors/deleted") Deleted Doctors

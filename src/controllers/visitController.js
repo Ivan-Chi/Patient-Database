@@ -6,12 +6,12 @@ exports.index = function(req, res, next) {
     if (err) {
       return next(err);
     }
-    res.render('visits/index', { title: 'Visits', visits: visits });
+    res.render('visitsIndex', { title: 'Visits', visits: visits });
   });
 }
 
 exports.new = function(req, res, next) {
-  res.render('visits/new', { title: 'New Visit' });
+  res.render('visitsNew', { title: 'New Visit' });
 }
 
 exports.show = function(req, res, next) {
@@ -19,7 +19,7 @@ exports.show = function(req, res, next) {
     if (err) {
       return next(err);
     }
-    res.render('visits/show', { title: 'Visit', visit: visit });
+    res.render('visitsShow', { title: 'Visit', visit: visit });
   });
 }
 
@@ -28,7 +28,7 @@ exports.edit = function(req, res, next) {
     if (err) {
       return next(err);
     }
-    res.render('visits/edit', { title: 'Edit Visit', visit: visit });
+    res.render('visitsEdit', { title: 'Edit Visit', visit: visit });
   });
 }
 
@@ -37,7 +37,7 @@ exports.delete = function(req, res, next) {
     if (err) {
       return next(err);
     }
-    res.render('visits/delete', { title: 'Delete Visit', visit: visit });
+    res.render('visitsDelete', { title: 'Delete Visit', visit: visit });
   });
 }
 
@@ -53,7 +53,7 @@ exports.destroy = function(req, res, next) {
 exports.create = function(req, res, next) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.render('visits/new', { title: 'New Visit', errors: errors.array() });
+    return res.render('visitsNew', { title: 'New Visit', errors: errors.array() });
   }
   const visit = new Visit(req.body);
   visit.save(function(err) {
@@ -67,7 +67,7 @@ exports.create = function(req, res, next) {
 exports.update = function(req, res, next) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.render('visits/edit', { title: 'Edit Visit', errors: errors.array() });
+    return res.render('visitsEdit', { title: 'Edit Visit', errors: errors.array() });
   }
   Visit.findByIdAndUpdate(req.params.id, req.body, function(err) {
     if (err) {
