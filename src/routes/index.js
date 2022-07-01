@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-// Doctors
+// gets and posts for doctor
 router.get('/doctors', doctorController.index);
 router.get('/doctors/new', doctorController.new);
 router.get('/doctors/:id', doctorController.show);
