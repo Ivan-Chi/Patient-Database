@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-const doctorController = require('../controllers/doctor');
-const insuranceController = require('../controllers/insurance');
-const patientController = require('../controllers/patient');
-const productController = require('../controllers/product');
-const visitController = require('../controllers/visit');
+const doctorController = require('../controllers/doctorController');
+const insuranceController = require('../controllers/insuranceController');
+const patientController = require('../controllers/patientController');
+const productController = require('../controllers/productController');
+const visitController = require('../controllers/visitController');
 
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
