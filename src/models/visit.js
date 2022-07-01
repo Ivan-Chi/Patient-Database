@@ -3,11 +3,11 @@ const Schema = mongoose.Schema;
 
 const visitSchema = new Schema({
   patient: { type: Schema.Types.ObjectId, ref: 'Patient', required: true },
-  doctor: { type: Schema.Types.ObjectId, ref: 'Doctor' },
-  date: { type: Date, default: Date.now },
-  diagnosis: { type: String, required: true },
-  treatment: { type: String, required: true },
-  purchases: [{ type: Schema.Types.ObjectId, ref: 'Product', required: true }],
+  doctor: { type: Schema.Types.ObjectId, ref: 'Doctor', required: true },
+  date: { type: Date, default: Date.now, required: true },
+  diagnosis: { type: String },
+  treatment: { type: String },
+  purchases: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
   price: { type: Number, required: true },
   notes: { type: String },
 }, { timestamps: true });

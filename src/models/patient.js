@@ -4,18 +4,22 @@ const Schema = mongoose.Schema;
 const { DateTime } = require('luxon');
 
 const patientSchema = new Schema({
-  name: { type: String, required: true },
-  dateOfBirth: { type: Date, required: true },
-  address: { type: String, required: true },
-  phone: { type: String, required: true },
-  medicalHistory: { type: String, required: true },
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  dateOfBirth: { type: Date },
+  address: { type: String },
+  phone: { type: Number },
+  email: { type: String },
+  medicalHistory: { type: String },
   insurance: { type: Schema.Types.ObjectId, ref: 'Insurance' },
-  visits: [{ type: Schema.Types.ObjectId, ref: 'Visit' }],
-  doctor: { type: Schema.Types.ObjectId, ref: 'Doctor' },
 }, { timestamps: true });
 
 patientSchema.virtual('url').get(function () {
   return `/patients/${this._id}`;
+});
+
+patientSchema.virtual('fullName').get(function () {
+  return `${this.firstName} ${this.lastName}`;
 });
 
 patientSchema.virtual('createdAtFormatted').get(function () {
