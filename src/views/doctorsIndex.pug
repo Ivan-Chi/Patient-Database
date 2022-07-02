@@ -14,39 +14,22 @@ block content
         th
           a(href="/doctors?sort=address") Address
         th
-          a(href="/doctors?sort=insurance") Insurance
-        th
-          a(href="/doctors?sort=specialty") Specialty
-        th
           a(href="/doctors?sort=created_at") Created At
         th
           a(href="/doctors?sort=updated_at") Updated At
-        th
-          a(href="/doctors?sort=deleted_at") Deleted At
-        th
-          a(href="/doctors?sort=id") Id
     tbody
       each doctor in doctors
         tr
           td
-            a(href="/doctors/#{doctor.id}") #{doctor.name}
+            a(href=doctor.url) #{doctor.fullName}
           td
-            a(href="/doctors/#{doctor.id}") #{doctor.email}
+            p #{doctor.email}
           td
-            a(href="/doctors/#{doctor.id}") #{doctor.phone}
+            p #{doctor.phone}
           td
-            a(href="/doctors/#{doctor.id}") #{doctor.address}
+            p #{doctor.address}
           td
-            a(href="/doctors/#{doctor.id}") #{doctor.insurance}
+            p #{doctor.createdAtFormatted}
           td
-            a(href="/doctors/#{doctor.id}") #{doctor.specialty}
-          td
-            a(href="/doctors/#{doctor.id}") #{doctor.created_at}
-          td
-            a(href="/doctors/#{doctor.id}") #{doctor.updated_at}
-          td
-            a(href="/doctors/#{doctor.id}") #{doctor.deleted_at}
-          td
-            a(href="/doctors/#{doctor.id}") #{doctor.id}
+            p #{doctor.updatedAtFormatted}
   a(href="/doctors/new") New Doctor
-  a(href="/doctors/deleted") Deleted Doctors

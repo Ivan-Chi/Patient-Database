@@ -1,5 +1,6 @@
 const Patient = require('../models/patient');
 const { validationResult } = require('express-validator');
+const insurance = require('../models/insurance');
 
 exports.index = function(req, res, next) {
   Patient.find({}, function(err, patients) {

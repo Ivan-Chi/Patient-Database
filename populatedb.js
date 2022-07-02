@@ -46,7 +46,7 @@ const doctorCreate = ( firstName, lastName, phone, email, address, cb) => {
 }
 
 const patientCreate = (firstName, lastName, dateOfBirth, address, phone, email, medicalHistory, insurance, cb) => {
-  patientDetails = { firstName, lastName, dateOfBirth, address, phone, medicalHistory, insurance };
+  patientDetails = { firstName, lastName, dateOfBirth, address, phone, email, medicalHistory, insurance };
   const patient = new Patient(patientDetails);
   patient.save(err => {
     if (err) {
@@ -133,11 +133,11 @@ const createInsurances = cb => {
 
 const createPatients = cb => {
   async.parallel([
-    callback => patientCreate(faker.name.findName(), faker.name.lastName(), faker.date.past(), faker.address.streetAddress(), faker.phone.number('########'), faker.lorem.paragraph(), insurances[0], callback),
-    callback => patientCreate(faker.name.findName(), faker.name.lastName(), faker.date.past(), faker.address.streetAddress(), faker.phone.number('########'), faker.lorem.paragraph(), insurances[1], callback),
-    callback => patientCreate(faker.name.findName(), faker.name.lastName(), faker.date.past(), faker.address.streetAddress(), faker.phone.number('########'), faker.lorem.paragraph(), insurances[4], callback),
-    callback => patientCreate(faker.name.findName(), faker.name.lastName(), faker.date.past(), faker.address.streetAddress(), faker.phone.number('########'), faker.lorem.paragraph(), insurances[2], callback),
-    callback => patientCreate(faker.name.findName(), faker.name.lastName(), faker.date.past(), faker.address.streetAddress(), faker.phone.number('########'), faker.lorem.paragraph(), insurances[3], callback),
+    callback => patientCreate(faker.name.findName(), faker.name.lastName(), faker.date.past(), faker.address.streetAddress(), faker.phone.number('########'), faker.internet.email(), faker.lorem.paragraph(), insurances[0], callback),
+    callback => patientCreate(faker.name.findName(), faker.name.lastName(), faker.date.past(), faker.address.streetAddress(), faker.phone.number('########'), faker.internet.email(), faker.lorem.paragraph(), insurances[1], callback),
+    callback => patientCreate(faker.name.findName(), faker.name.lastName(), faker.date.past(), faker.address.streetAddress(), faker.phone.number('########'), faker.internet.email(), faker.lorem.paragraph(), insurances[4], callback),
+    callback => patientCreate(faker.name.findName(), faker.name.lastName(), faker.date.past(), faker.address.streetAddress(), faker.phone.number('########'), faker.internet.email(), faker.lorem.paragraph(), insurances[2], callback),
+    callback => patientCreate(faker.name.findName(), faker.name.lastName(), faker.date.past(), faker.address.streetAddress(), faker.phone.number('########'), faker.internet.email(), faker.lorem.paragraph(), insurances[3], callback),
   ], cb);
 }
 
