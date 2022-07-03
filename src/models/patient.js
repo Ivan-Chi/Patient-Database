@@ -26,6 +26,10 @@ patientSchema.virtual('dateOfBirthFormatted').get(function () {
   return this.dateOfBirth ? DateTime.fromJSDate(this.dateOfBirth).toFormat('LLLL dd, yyyy') : '';
 });
 
+patientSchema.virtual('dateOfBirthISO').get(function () {
+  return this.dateOfBirth ? DateTime.fromJSDate(this.dateOfBirth).toFormat('yyyy-LL-dd') : '';
+});
+
 patientSchema.virtual('age').get(function () {
   return this.dateOfBirth ? DateTime.fromJSDate(this.dateOfBirth).diffNow().years : '';
 });

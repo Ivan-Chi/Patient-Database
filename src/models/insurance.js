@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
+const Patient = require('../models/patient');
 const { DateTime } = require('luxon');
 
 const insuranceSchema = new Schema({
@@ -10,7 +10,7 @@ const insuranceSchema = new Schema({
   email: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
-});
+}, { timestamps: true });
 
 insuranceSchema.virtual('url').get(function () {
   return `/insurances/${this._id}`;

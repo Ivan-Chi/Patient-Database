@@ -3,39 +3,38 @@ extends layout
 block content 
   h1= title 
   table 
-    thead 
-      tr 
-        th 
-          a(href="/patients?sort=name") Name
-        th
-          a(href="/patients?sort=email") Email
-        th
-          a(href="/patients?sort=phone") Phone
-        th
-          a(href="/patients?sort=address") Address
-        th
-          a(href="/patient?sort=dateOfBirth") Date of Birth
-        th
-          a(href="/patient?sort=age") Age
-        th
-          a(href="/patient?sort=insurance") Insurance
-        th
-          a(href="/patient?sort=created_at") Created At
-        th
-          a(href="/patient?sort=updated_at") Updated At
-
-    tbody 
-      each patient in patients 
-        tr 
-          td= patient.fullName 
-          td= patient.email 
-          td= patient.phone 
-          td= patient.address
-          td= patient.dateOfBirthFormatted
-          td= patient.age
-          td= patient.insurance 
-          td= patient.created_at 
-          td= patient.updated_at 
-          td 
-            a(href="/patients/edit/" + patient.id) Edit 
-            a(href="/patients/delete/" + patient.id) Delete
+   thead 
+     tr 
+       th 
+         a(href="/patients?sort=name") Name
+       th
+         a(href="/patients?sort=email") Email
+       th
+         a(href="/patients?sort=phone") Phone
+       th
+         a(href="/patients?sort=address") Address
+       th
+         a(href="/patient?sort=dateOfBirth") Date of Birth
+       th
+         a(href="/patient?sort=age") Insurance
+   tbody 
+     each patient in patients 
+       tr 
+        td 
+          a(href=patient.url) #{patient.fullName}
+        td= patient.email 
+        td= patient.phone 
+        td= patient.address
+        td= patient.dateOfBirthFormatted
+        if patient.insurance
+          td
+           a(href=patient.insurance.url) #{patient.insurance.name}
+        else
+          td
+            | None
+        td
+          a(href=patient.url+"/update")
+            | Edit
+          a(href=patient.url+"/delete")
+            | Delete
+  a(href="/patients/new") New Patient

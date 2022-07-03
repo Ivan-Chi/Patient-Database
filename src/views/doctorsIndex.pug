@@ -23,13 +23,18 @@ block content
           td
             a(href=doctor.url) #{doctor.fullName}
           td
-            p #{doctor.email}
+            | #{doctor.email}
           td
-            p #{doctor.phone}
+            | #{doctor.phone}
           td
-            p #{doctor.address}
+            | #{doctor.address}
           td
-            p #{doctor.createdAtFormatted}
+            | #{doctor.createdAtFormatted}
           td
-            p #{doctor.updatedAtFormatted}
+            | #{doctor.updatedAtFormatted}
+          td
+            a(href=doctor.url+"/update")
+              | Edit
+            a(href=doctor.url+"/delete")
+              | Delete
   a(href="/doctors/new") New Doctor

@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1 Product 
+  h2 #{product.name}
+  p Description: #{product.description}
+  p MSRP: #{product.msrp}
+
+  p
+    strong Last Updated At:
+    p #{product.updatedAtFormatted}
+  
+  a(href=product.url+"/update") Edit
+  a(href=product.url+"/delete") Delete

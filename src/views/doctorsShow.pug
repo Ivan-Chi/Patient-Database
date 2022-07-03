@@ -1,10 +1,11 @@
 extends layout 
 
 block content 
-  h1 Doctor: #{doctor.fullName}
-  p #{doctor.phone}
-  p #{doctor.email}
-  p #{doctor.address}
+  h1 Doctor
+  h2 #{doctor.fullName}
+  p Phone Number: #{doctor.phone}
+  p Email: #{doctor.email}
+  p Address: #{doctor.address}
 
   p
     strong Last Updated At:
@@ -12,4 +13,3 @@ block content
 
   a(href=doctor.url+"/update") Edit
   a(href=doctor.url+"/delete") Delete
-  a(href="/doctors") Back

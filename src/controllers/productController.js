@@ -1,12 +1,12 @@
 const Product = require('../models/product');
-const { validationResult } = require('express-validator');
+const { body, validationResult } = require('express-validator');
 
 exports.index = function(req, res, next) {
   Product.find({}, function(err, products) {
     if (err) {
       return next(err);
     }
-    res.render('productsIindex', { title: 'Products', products: products });
+    res.render('productsIndex', { title: 'Products', products: products });
   });
 }
 
@@ -50,29 +50,41 @@ exports.destroy = function(req, res, next) {
   });
 }
 
-exports.create = function(req, res, next) {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.render('productsNew', { title: 'New Product', errors: errors.array() });
-  }
-  const product = new Product(req.body);
-  product.save(function(err) {
-    if (err) {
-      return next(err);
+exports.create = [
+  body('name').isLength({ min: 1 }).withMessage('Name must be at least 1 characters long').escape(),
+  body('description').isLength({ min: 1 }).withMessage('Description must be at least 1 characters long').escape(),
+  body('msrp').isLength({ min: 1 }).withMessage('MSRP must be at least 1 characters long').escape(),
+  
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.render('productsNew', { title: 'New Product', errors: errors.array() });
     }
-    res.redirect('/products');
-  });
-}
+    const product = new Product(req.body);
+    product.save(function(err) {
+      if (err) {
+        return next(err);
+      }
+      res.redirect('/products');
+    });
+  }
+]
 
-exports.update = function(req, res, next) {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.render('productsEdit', { title: 'Edit Product', errors: errors.array() });
-  }
-  Product.findByIdAndUpdate(req.params.id, req.body, function(err) {
-    if (err) {
-      return next(err);
+exports.update = [
+  body('name').isLength({ min: 1 }).withMessage('Name must be at least 1 characters long').escape(),
+  body('description').isLength({ min: 1 }).withMessage('Description must be at least 1 characters long').escape(),
+  body('msrp').isLength({ min: 1 }).withMessage('MSRP must be at least 1 characters long').escape(),
+
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.render('productsEdit', { title: 'Edit Product', errors: errors.array() });
     }
-    res.redirect('/products');
-  });
-}
+    Product.findByIdAndUpdate(req.params.id, req.body, function(err) {
+      if (err) {
+        return next(err);
+      }
+      res.redirect('/products');
+    });
+  }
+]

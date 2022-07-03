@@ -20,11 +20,11 @@ doctorSchema.virtual('fullName').get(function () {
 });
 
 doctorSchema.virtual('createdAtFormatted').get(function () {
-  return DateTime.fromJSDate(this.createdAt).toFormat('dd LLL yyyy');
+  return DateTime.fromJSDate(this.createdAt).toFormat('yyyy LLL dd');
 });
 
 doctorSchema.virtual('updatedAtFormatted').get(function () {
-  return DateTime.fromJSDate(this.updatedAt).toFormat('dd LLL yyyy');
+  return DateTime.fromJSDate(this.updatedAt).toFormat('yyyy LLL dd');
 });
 
 module.exports = mongoose.model('Doctor', doctorSchema);

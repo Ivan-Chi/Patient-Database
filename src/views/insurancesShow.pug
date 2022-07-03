@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  h1 Insurance 
+  h2 #{insurance.name}
+  p Phone Number: #{insurance.phone}
+  p Email: #{insurance.email}
+  p Address: #{insurance.address}
+
+  p
+    strong Last Updated At:
+    p #{insurance.updatedAtFormatted}
+
+  a(href=insurance.url+"/update") Edit
+  a(href=insurance.url+"/delete") Delete
+
+
+  

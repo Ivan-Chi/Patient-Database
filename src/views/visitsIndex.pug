@@ -1,0 +1,29 @@
+extends layout 
+
+block content 
+  h1= title
+  table
+    thead
+      tr
+        th
+          a(href="/visits?sort=date") Date
+        th
+          a(href="/visits?sort=patient") Patient
+        th
+          a(href="/visits?sort=treatment") Treatment
+        th
+          a(href="/visits?sort=price") Price
+    tbody
+      each visit in visits
+        tr
+          td
+            a(href=visit.url) #{visit.dateFormatted}
+          td
+            a(href=visit.patient.url) #{visit.patient.fullName}
+          td= visit.treatment
+          td= visit.price
+          td
+            a(href=visit.url + "/update") Edit
+          td
+            a(href=visit.url + "/delete") Delete
+  a(href="/visits/new") New Visit

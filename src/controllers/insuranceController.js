@@ -1,5 +1,5 @@
 const Insurance = require('../models/insurance');
-const { validationResult } = require('express-validator');
+const { body, validationResult } = require('express-validator');
 
 exports.index = function(req, res, next) {
   Insurance.find({}, function(err, insurances) {
@@ -50,29 +50,59 @@ exports.destroy = function(req, res, next) {
   });
 }
 
-exports.create = function(req, res, next) {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.render('insurancesNew', { title: 'New Insurance', errors: errors.array() });
-  }
-  const insurance = new Insurance(req.body);
-  insurance.save(function(err) {
-    if (err) {
-      return next(err);
-    }
-    res.redirect('/insurances');
-  });
-}
+exports.create = [
+  body('name').isLength({ min: 1 }).withMessage('Name must be at least 1 characters long').escape(),
+  body('address').isLength({ min: 1 }).withMessage('Address must be at least 1 characters long').escape(),
+  body('phone').isLength({ min: 1 }).withMessage('Phone must be at least 1 characters long').escape(),
+  body('email').isEmail().withMessage('Email must be a valid email address').escape(),
 
-exports.update = function(req, res, next) {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.render('insurancesEdit', { title: 'Edit Insurance', errors: errors.array() });
-  }
-  Insurance.findByIdAndUpdate(req.params.id, req.body, function(err) {
-    if (err) {
-      return next(err);
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.render('insurancesNew', { title: 'New Insurance', errors: errors.array() });
     }
-    res.redirect('/insurances');
-  });
-}
+    const insurance = new Insurance({
+      name: req.body.name,
+      address: req.body.address,
+      phone: req.body.phone,
+      email: req.body.email,
+    });
+    insurance.save(function(err) {
+      if (err) {
+        return next(err);
+      }
+      res.redirect('/insurances');
+    });
+  }
+]
+
+exports.update = [
+  body('name').isLength({ min: 1 }).withMessage('Name must be at least 1 characters long').escape(),
+  body('address').isLength({ min: 1 }).withMessage('Address must be at least 1 characters long').escape(),
+  body('phone').isLength({ min: 3 }).withMessage('Phone must be at least 3 characters long').escape(),
+  body('email').isEmail().withMessage('Email must be a valid email address').escape(),
+
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      Insurance.findById(req.params.id, function(err, insurance) {
+        if (err) {
+          return next(err);
+        }
+      return res.render('insurancesEdit', { title: 'Edit Insurance', insurance, errors: errors.array() });
+      });
+      return;
+    }
+    Insurance.findByIdAndUpdate(req.params.id, {
+      name: req.body.name,
+      address: req.body.address,
+      phone: req.body.phone,
+      email: req.body.email,
+    }, function(err) {
+      if (err) {
+        return next(err);
+      }
+      res.redirect(`/insurances/${req.params.id}`);
+    });
+  }
+]

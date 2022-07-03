@@ -1,5 +1,5 @@
 const Doctor = require('../models/doctor');
-const { validationResult } = require('express-validator');
+const { body, validationResult } = require('express-validator');
 
 exports.index = function(req, res, next) {
   Doctor.find({}, function(err, doctors) {
@@ -50,29 +50,52 @@ exports.destroy = function(req, res, next) {
   });
 }
 
-exports.create = function(req, res, next) {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.render('doctorsNew', { title: 'New Doctor', errors: errors.array() });
-  }
-  const doctor = new Doctor(req.body);
-  doctor.save(function(err) {
-    if (err) {
-      return next(err);
-    }
-    res.redirect('/doctors');
-  });
-}
+exports.create = [
+  body('firstName').isLength({ min: 1 }).withMessage('Name must be at least 1 characters long'),
+  body('lastName').isLength({ min: 1 }).withMessage('Name must be at least 1 characters long'),
+  body('email').isEmail().withMessage('Email must be a valid email address'),
+  body('phone').isLength({ min: 3 }).withMessage('Phone must be at least 10 characters long'),
+  body('address').isLength({ min: 1 }).withMessage('Address must be at least 3 characters long'),
 
-exports.update = function(req, res, next) {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.render('doctorsEdit', { title: 'Edit Doctor', errors: errors.array() });
-  }
-  Doctor.findByIdAndUpdate(req.params.id, req.body, function(err) {
-    if (err) {
-      return next(err);
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.render('doctorsNew', { title: 'New Doctor', errors: errors.array() });
     }
-    res.redirect('/doctors');
-  });
-}
+    const doctor = new Doctor(req.body);
+    doctor.save(function(err) {
+      if (err) {
+        return next(err);
+      }
+      res.redirect('/doctors');
+    });
+  }
+]
+
+exports.update = [
+  body('firstName').isLength({ min: 1 }).withMessage('Name must be at least 3 characters long'),
+  body('lastName').isLength({ min: 1 }).withMessage('Name must be at least 3 characters long'),
+  body('email').isEmail().withMessage('Email must be a valid email address'),
+  body('phone').isLength({ min: 3 }).withMessage('Phone must be at least 10 characters long'),
+  body('address').isLength({ min: 1 }).withMessage('Address must be at least 3 characters long'),
+
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      Doctor.findById(req.params.id, function(err, doctor) {
+        if (err) {
+          return next(err);
+        }
+          res.render('doctorsEdit', { title: 'Edit Doctor', doctor, errors: errors.array() });
+      });
+      return;
+    }
+
+    Doctor.findByIdAndUpdate(req.params.id, req.body, function(err) {
+      if (err) {
+        return next(err);
+      }
+      res.redirect('/doctors');
+    });
+  }
+]
