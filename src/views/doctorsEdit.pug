@@ -1,0 +1,25 @@
+extends layout 
+
+block content 
+  form(method='post' action='')
+    div 
+      label(for='firstName') First Name
+      input(type='text' name='firstName' id='firstName' value=doctor.firstName)
+    div
+      label(for='lastName') Last Name
+      input(type='text' name='lastName' id='lastName' value=doctor.lastName)
+    div
+      label(for='phone') Phone Number
+      input(type='number' name='phone' id='phone' value=doctor.phone)
+    div
+      label(for='email') Email
+      input(type='email' name='email' id='email' value=doctor.email)
+    div
+      label(for='address') Address
+      input(type='text' name='address' id='address' value=doctor.address)
+    div
+      button(type='submit') Update
+    if errors 
+      ul
+        for error in errors
+          li= error.msg

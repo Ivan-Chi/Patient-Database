@@ -1,0 +1,44 @@
+extends layout 
+
+block content 
+  form(method='post' action='')
+    div
+      label(for='firstName') First Name
+      input(type='text' name='firstName' id='firstName' value=patient.firstName)
+    div
+      label(for='lastName') Last Name
+      input(type='text' name='lastName' id='lastName' value=patient.lastName)
+    div
+      label(for='dateOfBirth') Date of Birth
+      input(type='date' name='dateOfBirth' id='dateOfBirth' value=patient.dateOfBirthISO)
+    div
+      label(for='address') Address
+      input(type='text' name='address' id='address' value=patient.address)
+    div
+      label(for='phone') Phone Number
+      input(type='number' name='phone' id='phone' value=patient.phone)
+    div
+      label(for='email') Email
+      input(type='email' name='email' id='email' value=patient.email)
+    div
+      label(for='medicalHistory') Medical History
+      input(type='text' name='medicalHistory' id='medicalHistory' value=patient.medicalHistory)
+    div
+      label(for='insurance') Insurance Provider
+      select(name='insurance' id='insurance' value=patient.insurance)
+        option(value=undefined) None
+        for insuranceProvider in insurances
+          if(patient.insurance != undefined)
+            if(patient.insurance.id == insuranceProvider.id)
+              option(selected value=insuranceProvider.id) #{insuranceProvider.name}
+            else 
+              option(value=insuranceProvider.id) #{insuranceProvider.name}
+          else
+            option(value=insuranceProvider.id) #{insuranceProvider.name}
+    div
+      button(type='submit') Update
+
+    if errors
+      ul
+        for error in errors
+          li!= error.msg

@@ -1,0 +1,28 @@
+extends layout 
+
+block content 
+  h1= title 
+  table 
+    thead
+      tr 
+        th
+          a(href="/products?sort=name") Name
+        th
+          | Description
+        th
+          a(href="/products?sort=msrp") MSRP 
+    tbody
+      each product in products 
+        tr
+          td
+            a(href=product.url) #{product.name}
+          td
+            | #{product.description}
+          td
+            | #{product.msrp}
+          td
+            a(href=product.url+"/update")
+              | Edit
+            a(href=product.url+"/delete")
+              | Delete
+  a(href="/products/new") Add Product

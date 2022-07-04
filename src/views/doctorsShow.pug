@@ -1,0 +1,15 @@
+extends layout 
+
+block content 
+  h1 Doctor
+  h2 #{doctor.fullName}
+  p Phone Number: #{doctor.phone}
+  p Email: #{doctor.email}
+  p Address: #{doctor.address}
+
+  p
+    strong Last Updated At:
+    p #{doctor.updatedAtFormatted}
+
+  a(href=doctor.url+"/update") Edit
+  a(href=doctor.url+"/delete") Delete

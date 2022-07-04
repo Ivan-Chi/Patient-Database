@@ -1,0 +1,29 @@
+extends layout 
+
+block content 
+  h1= title
+  form(action='', method='post')
+    input(type="hidden", name="id")
+    div
+      label(for="firstName") First Name
+      input(type="text", name="firstName", id="firstName")
+    div 
+      label(for="lastName") Last Name
+      input(type="text", name="lastName", id="lastName")
+    div
+      label(for="email") Email
+      input(type="email", name="email", id="email")
+    div
+      label(for="phone") Phone
+      input(type="number", name="phone", id="phone")
+    div
+      label(for="address") Address
+      input(type="text", name="address", id="address")
+    div
+      input(type="submit", value="Submit")
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg
+        

@@ -1,0 +1,36 @@
+extends layout 
+
+block content 
+  h1= title
+  table
+    thead
+      tr
+        th
+          | Name
+        th
+          | Phone Number
+        th
+          | Address
+        th
+          | Email
+        th
+          | Updated At
+    tbody
+      each insurance in insurances
+        tr
+          td
+            a(href=insurance.url) #{insurance.name}
+          td
+            | #{insurance.phone}
+          td
+            | #{insurance.address}
+          td 
+            | #{insurance.email}
+          td 
+            | #{insurance.updatedAtFormatted}
+          td
+            a(href=insurance.url+"/update")
+              | Edit
+            a(href=insurance.url+"/delete")
+              | Delete
+  a(href="/insurances/new") Create Insurance

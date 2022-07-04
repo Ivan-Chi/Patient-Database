@@ -1,0 +1,40 @@
+extends layout
+
+block content
+  h1= title
+  table
+    thead
+      tr
+        th
+          a(href="/doctors?sort=name") Name
+        th
+          a(href="/doctors?sort=email") Email
+        th
+          a(href="/doctors?sort=phone") Phone
+        th
+          a(href="/doctors?sort=address") Address
+        th
+          a(href="/doctors?sort=created_at") Created At
+        th
+          a(href="/doctors?sort=updated_at") Updated At
+    tbody
+      each doctor in doctors
+        tr
+          td
+            a(href=doctor.url) #{doctor.fullName}
+          td
+            | #{doctor.email}
+          td
+            | #{doctor.phone}
+          td
+            | #{doctor.address}
+          td
+            | #{doctor.createdAtFormatted}
+          td
+            | #{doctor.updatedAtFormatted}
+          td
+            a(href=doctor.url+"/update")
+              | Edit
+            a(href=doctor.url+"/delete")
+              | Delete
+  a(href="/doctors/new") New Doctor

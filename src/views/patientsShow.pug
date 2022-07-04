@@ -1,0 +1,26 @@
+extends layout 
+
+block content 
+  h1 Patient
+  h2 #{patient.fullName}
+  p Phone Number: #{patient.phone}
+  p Email: #{patient.email}
+  p Address: #{patient.address}
+  p Date of Birth: #{patient.dateOfBirthFormatted}
+  p Medical History: #{patient.medicalHistory}
+  p Age: #{patient.age}
+  if patient.insurance
+    p 
+      a(href=patient.insurance.url) Insurance: #{patient.insurance.name}
+  else
+    p Insurance: None
+
+  div
+    p 
+      strong Created At:
+      p #{patient.createdAtFormatted}
+    p 
+      strong Last Updated At:
+      p #{patient.updatedAtFormatted}
+  a(href=patient.url+"/update") Edit
+  a(href=patient.url+"/delete") Delete

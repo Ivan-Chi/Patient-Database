@@ -22,6 +22,18 @@ patientSchema.virtual('fullName').get(function () {
   return `${this.firstName} ${this.lastName}`;
 });
 
+patientSchema.virtual('dateOfBirthFormatted').get(function () {
+  return this.dateOfBirth ? DateTime.fromJSDate(this.dateOfBirth).toFormat('LLLL dd, yyyy') : '';
+});
+
+patientSchema.virtual('dateOfBirthISO').get(function () {
+  return this.dateOfBirth ? DateTime.fromJSDate(this.dateOfBirth).toFormat('yyyy-LL-dd') : '';
+});
+
+patientSchema.virtual('age').get(function () {
+  return this.dateOfBirth ? DateTime.fromJSDate(this.dateOfBirth).diffNow().years : '';
+});
+
 patientSchema.virtual('createdAtFormatted').get(function () {
   return DateTime.fromJSDate(this.createdAt).toFormat('dd LLL yyyy');
 });

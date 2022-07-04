@@ -1,0 +1,37 @@
+extends layout 
+
+block content 
+  form(method='post' action='')
+    div
+      label(for='firstName') First Name
+      input(type='text' name='firstName' id='firstName')
+    div
+      label(for='lastName') Last Name
+      input(type='text' name='lastName' id='lastName')
+    div
+      label(for='dateOfBirth') Date of Birth
+      input(type='date' name='dateOfBirth' id='dateOfBirth')
+    div
+      label(for='address') Address
+      input(type='text' name='address' id='address')
+    div
+      label(for='phone') Phone Number
+      input(type='number' name='phone' id='phone')
+    div
+      label(for='email') Email
+      input(type='email' name='email' id='email')
+    div
+      label(for='medicalHistory') Medical History
+      input(type='text' name='medicalHistory' id='medicalHistory')
+    div
+      label(for='insuranceProvider') Insurance Provider
+      select(name='insuranceProvider' id='insuranceProvider')
+        option(value=undefined) None
+        for insuranceProvider in insurances
+          option(value=insuranceProvider.id) #{insuranceProvider.name}
+    div
+      button(type='submit') Update
+    if errors 
+      ul
+        for error in errors
+          li!= error.msg

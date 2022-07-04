@@ -1,0 +1,12 @@
+extends layout 
+
+block content 
+  h1= title 
+  h2 Please remove the doctor from the following visits, or delete these visits first
+  ul
+    each visit in visits
+      li
+        a(href=visit.url)
+         = visit.dateFormatted
+        a(href=visit.url + '/delete')
+          | Delete

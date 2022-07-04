@@ -1,0 +1,52 @@
+extends layout 
+
+block content 
+  h1= title
+  form(action='', method='post')
+    div
+      label(for='patient') Patient
+      select(name='patient', id='patient', required)
+        each patient in patients
+          if(patient.id == visit.patient)
+            option(value=patient.id, selected)= patient.fullName
+          else
+            option(value=patient.id)= patient.fullName
+    div
+      label(for='doctor') Doctor
+      select(id='doctor' required, name='doctor')
+        each doctor in doctors
+          if(doctor.id == visit.doctor)
+            option(value=doctor.id, selected)= doctor.fullName
+          else
+            option(value=doctor.id)= doctor.fullName
+    div
+      label(for='date') Visit Date
+      input(type="date", name="date", id="date", required, value=visit.dateFormatted)
+    div
+      label(for='diagnosis') Diagnosis
+      input(type="text", name="diagnosis", id="diagnosis", value=visit.diagnosis)
+    div
+      label(for='treatment') Treatment
+      input(type="text", name="treatment", id="treatment", value=visit.treatment)
+    div
+      label(for='notes') Notes
+      input(type="text", name="notes", id="notes", value=visit.notes)
+    div
+      label(for='purchases[]') Purchases
+      select(id='purchases', name='purchases[]' multiple)
+        for product in products
+          if product.id in visit.purchases 
+            option(value=product.id, selected)= product.name
+          else
+            option(value=product.id)= product.name
+    div
+      label(for="price") Price
+      input(type="number", name="price", id="price", value=visit.price)
+    div
+      input(type="submit", value="Submit")
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg
+        

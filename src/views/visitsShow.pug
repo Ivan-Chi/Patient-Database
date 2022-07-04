@@ -1,0 +1,45 @@
+extends layout 
+
+block content 
+  h1 Visit
+  h2 Participants
+  p 
+    strong Patient Name: 
+    p
+      a(href=visit.patient.url) #{visit.patient.fullName}
+  p 
+    strong Doctor Name: 
+    p 
+      a(href=visit.doctor.url) #{visit.doctor.fullName}
+  h2 Details
+  p 
+    strong Date: 
+    p #{visit.dateFormatted}
+  p
+    strong Diagnosis: 
+    p #{visit.diagnosis}  
+  p
+    strong Treatment: 
+    p #{visit.treatment}
+  p 
+    strong Notes: 
+    p #{visit.notes}  
+  h2 Purchases
+  ul
+    each purchase in visit.purchases
+      li
+        strong
+          a(href=purchase.url) #{purchase.name}
+        p #{purchase.description}
+        p 
+          strong Price: 
+          | $#{purchase.msrp}
+  p 
+    strong Price Total: 
+    p $#{visit.price}
+  p
+    strong Last Updated At:
+    p #{visit.updatedAtFormatted}
+  
+  a(href=visit.url+"/update") Edit
+  a(href=visit.url+"/delete") Delete

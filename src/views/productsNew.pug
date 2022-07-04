@@ -1,0 +1,23 @@
+extends layout 
+
+block content 
+  h1= title
+  form(action='', method='post')
+    input(type="hidden", name="id")
+    div
+      label(for="name") Name
+      input(type="text", name="name", id="name")
+    div
+      label(for="description") Description
+      input(type="text", name="description", id="description")
+    div
+      label(for="msrp") MSRP
+      input(type="number", name="msrp", id="msrp")
+    div
+      input(type="submit", value="Submit")
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg
+        

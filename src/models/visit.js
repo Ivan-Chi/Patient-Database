@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const { DateTime } = require('luxon');
 
 const visitSchema = new Schema({
   patient: { type: Schema.Types.ObjectId, ref: 'Patient', required: true },
@@ -14,6 +15,10 @@ const visitSchema = new Schema({
 
 visitSchema.virtual('url').get(function () {
   return `/visits/${this._id}`;
+});
+
+visitSchema.virtual('dateFormatted').get(function () {
+  return DateTime.fromJSDate(this.date).toFormat('yyyy-LL-dd');
 });
 
 visitSchema.virtual('createdAtFormatted').get(function () {
