@@ -1,5 +1,7 @@
 const Doctor = require('../models/doctor');
+const Visit = require('../models/visit');
 const { body, validationResult } = require('express-validator');
+const async = require('async');
 
 exports.index = function(req, res, next) {
   Doctor.find({}, function(err, doctors) {
@@ -33,20 +35,27 @@ exports.edit = function(req, res, next) {
 }
 
 exports.delete = function(req, res, next) {
-  Doctor.findById(req.params.id, function(err, doctor) {
+  async.parallel({
+    doctor: function(callback) {
+      Doctor.findById(req.params.id).exec(callback);
+    },
+    visits: function(callback) {
+      Visit.find({ doctor: req.params.id }).exec(callback);
+    }
+  }, function(err, results) {
     if (err) {
       return next(err);
     }
-    res.render('doctorsDelete', { title: 'Delete Doctor', doctor: doctor });
-  });
-}
-
-exports.destroy = function(req, res, next) {
-  Doctor.findByIdAndRemove(req.params.id, function(err) {
-    if (err) {
-      return next(err);
+    if(results.visits.length > 0) {
+      res.render('doctorsDelete', { title: 'Delete Doctor', doctor: results.doctor, visits: results.visits });
+    } else {
+      Doctor.findByIdAndRemove(req.params.id, function(err) {
+        if (err) {
+          return next(err);
+        }
+        res.redirect('/doctors');
+      });
     }
-    res.redirect('/doctors');
   });
 }
 

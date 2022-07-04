@@ -1,5 +1,7 @@
 const Insurance = require('../models/insurance');
 const { body, validationResult } = require('express-validator');
+const Patient = require('../models/patient');
+const async = require('async');
 
 exports.index = function(req, res, next) {
   Insurance.find({}, function(err, insurances) {
@@ -33,20 +35,27 @@ exports.edit = function(req, res, next) {
 }
 
 exports.delete = function(req, res, next) {
-  Insurance.findById(req.params.id, function(err, insurance) {
+  async.parallel({
+    insurance: function(callback) {
+      Insurance.findById(req.params.id).exec(callback);
+    },
+    patients: function(callback) {
+      Patient.find({ 'insurance': req.params.id }).exec(callback);
+    }
+  }, function(err, results) {
     if (err) {
       return next(err);
     }
-    res.render('insurancesDelete', { title: 'Delete Insurance', insurance: insurance });
-  });
-}
-
-exports.destroy = function(req, res, next) {
-  Insurance.findByIdAndRemove(req.params.id, function(err) {
-    if (err) {
-      return next(err);
+    if (results.patients.length > 0) {
+      res.render('insurancesDelete', { title: 'Delete Insurance', insurance: results.insurance, patients: results.patients });
+    } else {
+      Insurance.findByIdAndRemove(req.params.id, function(err) {
+        if (err) {
+          return next(err);
+        }
+        res.redirect('/insurances');
+      });
     }
-    res.redirect('/insurances');
   });
 }
 

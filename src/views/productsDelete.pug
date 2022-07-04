@@ -1,0 +1,14 @@
+extends layout 
+
+block content 
+  h1= title 
+  h2 Please delete these visits or remove this product from them first before deleting this product 
+  ul
+    each visit in visits
+      li
+        a(href='/visits/' + visit.id + '/update')
+         = visit.dateFormatted
+        a(href='/visits/' + visit.id + '/delete')
+          | Delete
+
+  form(action='/products/' + product.id + '/delete', method='POST')

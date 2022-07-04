@@ -1,6 +1,7 @@
 const Patient = require('../models/patient');
 const { body, validationResult } = require('express-validator');
 const Insurance = require('../models/insurance');
+const Visit = require('../models/visit');
 const async = require('async');
 
 exports.index = function(req, res, next) {
@@ -48,20 +49,27 @@ exports.edit = function(req, res, next) {
 }
 
 exports.delete = function(req, res, next) {
-  Patient.findById(req.params.id, function(err, patient) {
+  async.parallel({
+    patient: function(callback) {
+      Patient.findById(req.params.id).populate('insurance').exec(callback);
+    },
+    visits: function(callback) {
+      Visit.find({ patient: req.params.id }).exec(callback);
+    }
+  }, function(err, results) {
     if (err) {
       return next(err);
     }
-    res.render('patientsDelete', { title: 'Delete Patient', patient: patient });
-  });
-}
-
-exports.destroy = function(req, res, next) {
-  Patient.findByIdAndRemove(req.params.id, function(err) {
-    if (err) {
-      return next(err);
+    if(results.visits.length > 0) {
+      res.render('patientsDelete', { title: 'Delete Patient', patient: results.patient, visits: results.visits });
+    } else {
+      Patient.findByIdAndRemove(req.params.id, function(err) {
+        if (err) {
+          return next(err);
+        }
+        res.redirect('/patients');
+      });
     }
-    res.redirect('/patients');
   });
 }
 

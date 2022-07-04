@@ -77,15 +77,6 @@ exports.edit = function(req, res, next) {
 }
 
 exports.delete = function(req, res, next) {
-  Visit.findById(req.params.id, function(err, visit) {
-    if (err) {
-      return next(err);
-    }
-    res.render('visitsDelete', { title: 'Delete Visit', visit: visit });
-  });
-}
-
-exports.destroy = function(req, res, next) {
   Visit.findByIdAndRemove(req.params.id, function(err) {
     if (err) {
       return next(err);
@@ -149,15 +140,61 @@ exports.create = [
   }
 ]
 
-exports.update = function(req, res, next) {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.render('visitsEdit', { title: 'Edit Visit', errors: errors.array() });
-  }
-  Visit.findByIdAndUpdate(req.params.id, req.body, function(err) {
-    if (err) {
-      return next(err);
+exports.update = [
+  body('patient').isLength({ min: 1 }).trim().withMessage('Patient is required').escape(),
+  body('doctor').isLength({ min: 1 }).trim().withMessage('Doctor is required').escape(),
+  body('date').trim().isDate().withMessage('Date must be a valid date').escape(),
+  body('price').isLength({ min: 1 }).trim().withMessage('Price is required').escape(),
+  body('diagnosis').escape(),
+  body('treatment').escape(),
+  body('notes').escape(),
+  body('purchases').escape(),
+
+  (req, res, next) => {
+    req.body.purchases = req.body["purchases[]"];
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      async.parallel({
+        patients: function(callback) {
+          Patient.find(callback);
+        },
+        doctors: function(callback) {
+          Doctor.find(callback);
+        },
+        products: function(callback) {
+          Product.find(callback);
+        }
+      }, function(err, results) {
+        if (err) {
+          return next(err);
+        }
+        res.render('visitsEdit', { title: 'Edit Visit', visit: req.body, patients: results.patients, doctors: results.doctors, products: results.products, errors: errors.array() });
+      });
+      return;
     }
-    res.redirect('/visits');
-  });
-}
+
+    // for(let i = 0; i < req.body["purchases[]"].length; i++) {
+    //   req.body["purchases[]"][i] = mongoose.Types.ObjectId(req.body["purchases[]"][i]);
+    // }
+
+    Visit.findByIdAndUpdate(req.params.id, req.body, {}, function(err, visit) {
+      if (err) {
+        return next(err);
+      }
+      res.redirect(`/visits/${visit._id}`);
+    });
+  }
+]
+
+// exports.update = function(req, res, next) {
+//   const errors = validationResult(req);
+//   if (!errors.isEmpty()) {
+//     return res.render('visitsEdit', { title: 'Edit Visit', errors: errors.array() });
+//   }
+//   Visit.findByIdAndUpdate(req.params.id, req.body, function(err) {
+//     if (err) {
+//       return next(err);
+//     }
+//     res.redirect('/visits');
+//   });
+// }

@@ -1,0 +1,14 @@
+extends layout 
+
+block content 
+  h1= title 
+  h2 Please remove them as the insurance provider for these patients or delete them first
+  ul
+    each patient in patients
+      li
+        a(href=patient.url + '/update')
+         = patient.fullName
+        a(href=patient.url + '/delete')
+          | Delete
+  
+  form(action='/insurances/' + insurance.id + '/delete', method='POST')

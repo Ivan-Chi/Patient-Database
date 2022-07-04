@@ -1,0 +1,16 @@
+extends layout 
+
+block content 
+  h1= title 
+  h2 Please remove the patient from the following visits, or delete these visits first
+  ul
+    each visit in visits
+      li
+        a(href='/visits/' + visit.id + '/edit')
+         = visit.dateFormatted
+        a(href='/visits/' + visit.id + '/delete')
+          | Delete
+  
+  form(action='/patients/' + patient.id + '/delete', method='POST')
+    input(type='hidden', name='_method', value='DELETE')
+    input(type='submit', value='Delete')

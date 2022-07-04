@@ -1,5 +1,7 @@
 const Product = require('../models/product');
 const { body, validationResult } = require('express-validator');
+const Visit = require('../models/visit');
+const async = require('async');
 
 exports.index = function(req, res, next) {
   Product.find({}, function(err, products) {
@@ -33,20 +35,27 @@ exports.edit = function(req, res, next) {
 }
 
 exports.delete = function(req, res, next) {
-  Product.findById(req.params.id, function(err, product) {
+  async.parallel({
+    product: function(callback) {
+      Product.findById(req.params.id).exec(callback);
+    },
+    visits: function(callback) {
+      Visit.find({ purchases: req.params.id }).exec(callback);
+    }
+  }, function(err, results) {
     if (err) {
       return next(err);
     }
-    res.render('productsDelete', { title: 'Delete Product', product: product });
-  });
-}
-
-exports.destroy = function(req, res, next) {
-  Product.findByIdAndRemove(req.params.id, function(err) {
-    if (err) {
-      return next(err);
+    if (results.visits.length > 0) {
+      res.render('productsDelete', { title: 'Delete Product', product: results.product, visits: results.visits });
+    } else {
+      Product.findByIdAndRemove(req.params.id, function(err) {
+        if (err) {
+          return next(err);
+        }
+        res.redirect('/products');
+      });
     }
-    res.redirect('/products');
   });
 }
 
