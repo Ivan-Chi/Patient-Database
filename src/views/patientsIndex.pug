@@ -32,9 +32,11 @@ block content
         else
           td
             | None
-        td
-          a(href=patient.url+"/update")
-            | Edit
-          a(href=patient.url+"/delete")
-            | Delete
-  a(href="/patients/new") New Patient
+        if user.admin
+          td
+            a(href=patient.url+"/update")
+              | Edit
+            a(href=patient.url+"/delete")
+              | Delete
+  if user.admin
+    a(href="/patients/new") New Patient

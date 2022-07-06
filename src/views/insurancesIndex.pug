@@ -28,9 +28,11 @@ block content
             | #{insurance.email}
           td 
             | #{insurance.updatedAtFormatted}
+        if user.admin
           td
             a(href=insurance.url+"/update")
               | Edit
             a(href=insurance.url+"/delete")
               | Delete
-  a(href="/insurances/new") Create Insurance
+  if user.admin
+    a(href="/insurances/new") Create Insurance

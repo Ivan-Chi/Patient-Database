@@ -35,6 +35,10 @@ exports.edit = function(req, res, next) {
 }
 
 exports.delete = function(req, res, next) {
+  if(!req.user.admin) {
+    return res.redirect('/insurances');
+  }
+
   async.parallel({
     insurance: function(callback) {
       Insurance.findById(req.params.id).exec(callback);
@@ -66,6 +70,10 @@ exports.create = [
   body('email').isEmail().withMessage('Email must be a valid email address').escape(),
 
   (req, res, next) => {
+    if(!req.user.admin) {
+      return res.redirect('/insurances');
+    }
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.render('insurancesNew', { title: 'New Insurance', errors: errors.array() });
@@ -92,6 +100,10 @@ exports.update = [
   body('email').isEmail().withMessage('Email must be a valid email address').escape(),
 
   (req, res, next) => {
+    if(!req.user.admin) {
+      return res.redirect('/insurances');
+    }
+    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       Insurance.findById(req.params.id, function(err, insurance) {

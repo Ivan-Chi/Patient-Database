@@ -32,9 +32,9 @@ block content
             | #{doctor.createdAtFormatted}
           td
             | #{doctor.updatedAtFormatted}
-          td
-            a(href=doctor.url+"/update")
-              | Edit
-            a(href=doctor.url+"/delete")
-              | Delete
-  a(href="/doctors/new") New Doctor
+          if user.admin
+            td
+              a(href=doctor.url+"/update") Edit
+              a(href=doctor.url+"/delete") Delete
+  if user.admin
+    a(href="/doctors/new") New Doctor

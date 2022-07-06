@@ -6,9 +6,10 @@ const insuranceController = require('../controllers/insuranceController');
 const patientController = require('../controllers/patientController');
 const productController = require('../controllers/productController');
 const visitController = require('../controllers/visitController');
+const authController = require('../controllers/authController');
 
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get('/', (req, res) => {
+  res.redirect('/signin');
 });
 
 // gets and posts for doctor
@@ -65,5 +66,13 @@ router.get('/visits/:id/delete', visitController.delete);
 router.post('/visits/:id/delete', visitController.delete);
 router.post('/visits/new', visitController.create);
 router.post('/visits/:id/update', visitController.update);
+
+// gets and posts for authentication
+router.get('/signin', authController.signin);
+router.get('/signup', authController.signup);
+router.post('/signin', authController.authenticate)
+router.post('/signup', authController.create);
+router.get('/logout', authController.logout);
+router.post('/logout', authController.logout);
 
 module.exports = router;

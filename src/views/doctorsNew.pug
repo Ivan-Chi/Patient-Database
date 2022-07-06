@@ -1,6 +1,6 @@
-extends layout 
+extends adminOnlyLayout 
 
-block content 
+block adminContent
   h1= title
   form(action='', method='post')
     input(type="hidden", name="id")
