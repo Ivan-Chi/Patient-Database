@@ -20,9 +20,11 @@ block content
             | #{product.description}
           td
             | #{product.msrp}
-          td
-            a(href=product.url+"/update")
-              | Edit
-            a(href=product.url+"/delete")
-              | Delete
-  a(href="/products/new") Add Product
+          if user.admin
+            td
+              a(href=product.url+"/update")
+                | Edit
+              a(href=product.url+"/delete")
+                | Delete
+  if user.admin
+    a(href="/products/new") Add Product

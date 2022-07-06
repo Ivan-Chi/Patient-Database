@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  if user.admin
+    block adminContent
+  else
+    h1 You do not have permission to view this page (admin only)
+    a(href="/") Back to Home

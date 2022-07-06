@@ -11,8 +11,9 @@ block content
     strong Last Updated At:
     p #{insurance.updatedAtFormatted}
 
-  a(href=insurance.url+"/update") Edit
-  a(href=insurance.url+"/delete") Delete
+  if user.admin
+    a(href=insurance.url+"/update") Edit
+    a(href=insurance.url+"/delete") Delete
 
 
   

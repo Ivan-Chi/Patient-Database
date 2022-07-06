@@ -15,9 +15,17 @@ html
       a(href="/logout") Sign Out
     else
       a(href="/signin") Sign In
-  body
-    if user
-      block content
-    else
-      h1 Please Sign In
-      a(href="/signin") Sign In
+      
+body
+  form(action="", method="post")
+    label(for="username") Username 
+    input(type="text", name="username", id="username")
+    label(for="password") Password
+    input(type="password", name="password", id="password")
+    input(type="submit", value="Sign In")
+    a(href="/signup") Don't have an account?
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg

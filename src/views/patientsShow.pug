@@ -22,5 +22,7 @@ block content
     p 
       strong Last Updated At:
       p #{patient.updatedAtFormatted}
-  a(href=patient.url+"/update") Edit
-  a(href=patient.url+"/delete") Delete
+
+  if user.admin
+    a(href=patient.url+"/update") Edit
+    a(href=patient.url+"/delete") Delete
