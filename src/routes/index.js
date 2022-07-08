@@ -75,4 +75,10 @@ router.post('/signup', authController.create);
 router.get('/logout', authController.logout);
 router.post('/logout', authController.logout);
 
+router.get('/users', authController.users);
+// router.get('/users/:id/delete', authController.delete);
+// router.post('users/:id/makeAdmin', authController.makeAdmin);
+router.all('/users/:id/delete', authController.delete);
+router.all('/users/:id/makeAdmin', authController.makeAdmin);
+
 module.exports = router;

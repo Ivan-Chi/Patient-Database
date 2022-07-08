@@ -1,0 +1,25 @@
+extends adminOnlyLayout 
+
+block adminContent 
+  h1= title
+  table
+    thead
+      tr
+        th
+          | Username 
+        th
+          | Is Admin?
+        th
+          | Actions
+    tbody
+      each user in users
+        tr
+          td
+            | #{user.username}
+          td
+            | #{user.admin}
+          td
+            a(href=user.url+"/makeAdmin" id='makeAdmin')
+              | Toggle Admin
+            a(href=user.url+"/delete" id='deleteBtn')
+              | Delete

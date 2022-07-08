@@ -7,14 +7,14 @@ exports.signin = function(req, res, next) {
   if (req.user) {
     return res.redirect('/visits');
   }
-  res.render('signin', { title: 'Sign In' });
+  return res.render('signin', { title: 'Sign In' });
 }
 
 exports.signup = function(req, res, next) {
   if (req.user) {
     return res.redirect('/visits');
   }
-  res.render('signup', { title: 'Sign Up' });
+  return res.render('signup', { title: 'Sign Up' });
 }
 
 exports.authenticate = [
@@ -24,7 +24,7 @@ exports.authenticate = [
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.render('signin', { title: 'Sign In', errors: errors.array() });
+      return res.render('signin', { title: 'Sign In', errors: errors.array() });
     } else {
       passport.authenticate('local', {
         successRedirect: '/',
@@ -48,7 +48,7 @@ exports.create = [
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      res.render('signup', { title: 'Sign Up', errors: errors.array() });
+      return res.render('signup', { title: 'Sign Up', errors: errors.array() });
     } else {
       bcrypt.hash(req.body.password, 10, function(err, hash) {
         if (err) {
@@ -62,7 +62,7 @@ exports.create = [
           if (err) {
             return next(err);
           }
-          res.redirect('/signin');
+          return res.redirect('/signin');
         });
       });
     }
@@ -74,6 +74,88 @@ exports.logout = function(req, res, next) {
     if (err) {
       return next(err);
     }
-    res.redirect('/');
+    return res.redirect('/');
+  });
+}
+
+exports.users = function(req, res, next) {
+  User.find({}, function(err, users) {
+    if (err) {
+      return next(err);
+    }
+    return res.render('users', { title: 'Users', users: users });
+  });
+}
+
+exports.delete = function(req, res, next) {
+  if(!req.user.admin){
+    return res.redirect('/');
+  }
+  User.findById(req.params.id, function(err, user) {
+    if (err) {
+      return next(err);
+    }
+    if(user.admin){
+      User.count({admin: true}, function(err, count) {
+        if (err) {
+          return next(err);
+        }
+        if(count>1){
+          User.findByIdAndRemove(req.params.id, function(err) {
+            if (err) {
+              return next(err);
+            }
+            return res.redirect('/users');
+          });
+        } else {
+          return res.redirect('/users');
+        }
+      });
+    } else{
+      User.findByIdAndRemove(req.params.id, function(err) {
+        if (err) {
+          return next(err);
+        }
+        return res.redirect('/users');
+      });
+    }
+  });
+}
+
+exports.makeAdmin = function(req, res, next) {
+  if(!req.user.admin){
+    return res.redirect('/');
+  }
+
+  User.findById(req.params.id, function(err, user) {
+    if (err) {
+      return next(err);
+    }
+    if(user.admin){
+      User.count({admin: true}, function(err, count) {
+        if (err) {
+          return next(err);
+        }
+        if(count>1){
+          user.admin = false;
+          user.save(function(err) {
+            if (err) {
+              return next(err);
+            }
+          });
+          return res.redirect('/users');
+        }
+        return res.redirect('/users');
+      });
+    }
+    else{
+      user.admin = true;
+      user.save(function(err) {
+        if (err) {
+          return next(err);
+        }
+        return res.redirect('/users');
+      });
+    }
   });
 }

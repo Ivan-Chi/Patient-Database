@@ -11,6 +11,8 @@ html
     a(href="/products") Products
     a(href="/visits") Visits
     if user
+      if user.admin
+        a(href="/users") Users
       p User: #{user.username}
       a(href="/logout") Sign Out
     else
